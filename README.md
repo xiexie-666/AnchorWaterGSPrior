@@ -65,3 +65,5 @@ SeaThru-NeRF 的 `images_wb` 会优先于 `images`，相机和点云从 `sparse/
 论文与官方代码的逐项中文记录见 [`THREE_PAPERS_CODE_READING_CN.md`](THREE_PAPERS_CODE_READING_CN.md)。
 
 本实现是新的实验代码，官方仓库仅作为方法参考；训练结果不能直接声称复现论文指标。COLMAP 未标定场景的几何指标使用场景坐标单位，不能直接写成厘米或米。
+
+当前本机 smoke test 和指标口径见 [`RESULTS.md`](RESULTS.md)。
