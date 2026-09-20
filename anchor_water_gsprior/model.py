@@ -57,6 +57,27 @@ class AnchorWaterModel(nn.Module):
         self._anchor.requires_grad_(False)
         self.anchor_frozen = True
 
+    @torch.no_grad()
+    def densify(self, max_anchors: int, fraction: float = 0.05):
+        """Scaffold-GS 风格的前半程 Anchor clone/split。
+
+        这里按当前 opacity 选择高贡献 Anchor，复制中心并加入微小 offset。
+        调用方需要重建 optimizer，以便新 Parameter 行进入优化器；15k 后 train.py 不再调用本方法。
+        """
+        if self.anchor_frozen or self._anchor.shape[0] >= max_anchors:
+            return 0
+        n = min(max_anchors - self._anchor.shape[0], max(1, int(self._anchor.shape[0] * fraction)))
+        score = torch.sigmoid(self._opacity).mean(1)
+        ids = torch.topk(score, k=min(n, score.numel()), largest=True).indices
+        noise = torch.randn_like(self._anchor[ids]) * 0.002
+        self._anchor = nn.Parameter(torch.cat([self._anchor.detach(), self._anchor.detach()[ids] + noise], 0))
+        self._offset = nn.Parameter(torch.cat([self._offset.detach(), self._offset.detach()[ids]], 0))
+        self._anchor_feat = nn.Parameter(torch.cat([self._anchor_feat.detach(), self._anchor_feat.detach()[ids]], 0))
+        self._color = nn.Parameter(torch.cat([self._color.detach(), self._color.detach()[ids]], 0))
+        self._scale = nn.Parameter(torch.cat([self._scale.detach(), self._scale.detach()[ids]], 0))
+        self._opacity = nn.Parameter(torch.cat([self._opacity.detach(), self._opacity.detach()[ids]], 0))
+        return int(n)
+
     def optimizer_parameters(self, include_anchor=True):
         params = []
         for n, p in self.named_parameters():
