@@ -22,11 +22,7 @@ def project(xyz, frame, device, image_size=320):
     return torch.stack([u, v, z], -1), int(round(h0 * scale)), int(round(w0 * scale))
 
 
-def render(model, frame, rays_uv, image_size=320):
-    xyz, color, scale, opacity = model.gaussians()
-    device = xyz.device
-    p, h, w = project(xyz, frame, device, image_size)
-    uv = rays_uv.to(device).float()
+def _render_chunk(model, frame, uv, xyz, color, scale, opacity, p, h, w):
     delta = uv[:, None, :] - p[None, :, :2]
     sigma = (scale[:, :2].mean(-1).clamp_min(1e-3) * max(h, w)).detach() + 1.0
     weights = torch.exp(-0.5 * (delta.square().sum(-1) / sigma[None].square())) * opacity[None]
@@ -43,3 +39,16 @@ def render(model, frame, rays_uv, image_size=320):
     return {"rgb": rgb.clamp(0, 1), "rgb_object": rgb_object.clamp(0, 1), "rgb_clear": rgb_clear.clamp(0, 1),
             "rgb_medium": medium.clamp(0, 1), "depth": depth, "alpha": alpha,
             "medium_rgb": medium_rgb, "medium_bs": medium_bs, "medium_attn": medium_attn}
+
+
+def render(model, frame, rays_uv, image_size=320, ray_chunk=512):
+    xyz, color, scale, opacity = model.gaussians()
+    device = xyz.device
+    p, h, w = project(xyz, frame, device, image_size)
+    uv = rays_uv.to(device).float()
+    # Final image export can contain hundreds of thousands of rays. Chunking
+    # keeps the [rays, gaussians] temporary tensors bounded on 12 GB GPUs.
+    chunks = []
+    for start in range(0, len(uv), max(1, int(ray_chunk))):
+        chunks.append(_render_chunk(model, frame, uv[start:start + ray_chunk], xyz, color, scale, opacity, p, h, w))
+    return {key: torch.cat([chunk[key] for chunk in chunks], dim=0) for key in chunks[0]}
