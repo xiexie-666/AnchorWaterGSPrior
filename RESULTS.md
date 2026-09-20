@@ -22,6 +22,8 @@ D:\App\Miniconda3\envs\3D-UIR\python.exe train.py `
 | SeaThru-NeRF Curasao | 12 | 5 | 13.4382 | 0.0000 | 未计算 | 不可用 | 不可用 | 当前目录没有可核验几何 GT |
 | Shipwreck | 500 | 5 | 19.9580 | 0.0377 | 未计算 | 0.1226 | 0.0946 | CUDA；Anchor=128；`outputs/validation_shipwreck_500` |
 | SeaThru-NeRF Curasao | 500 | 5 | 19.7126 | 0.1483 | 未计算 | 不可用 | 不可用 | CUDA；Anchor=128；`outputs/validation_curasao_500` |
+| SeaThru-NeRF Curasao | 30000 | 5 | 20.1106 | 0.2548 | 未计算 | 不可用 | 不可用 | 完整 30k；Anchor=8192；`outputs/curasao_full_30k` |
+| Shipwreck | 30000 | 5 | 20.6565 | 0.0376 | 未计算 | 0.0928 | 0.3709 | 完整 30k；Anchor=8192；`outputs/shipwreck_full_30k` |
 
 ## 指标口径
 
@@ -30,6 +32,9 @@ D:\App\Miniconda3\envs\3D-UIR\python.exe train.py `
 - Shipwreck 的 Chamfer/F-score 使用预测 Anchor 中心与 GT 点云，两个点云分别做中位数中心和 98% 半径归一化后计算，阈值为 0.05。COLMAP 没有绝对尺度，所以这些几何值不是米或厘米。
 - 12 步运行是结构 smoke test，用于验证数据读取、可微渲染、Water MLP、扁平约束、15k 状态机接口和冻结逻辑。它不是论文级 30k 复现，也不应与论文表格直接比较。
 - 500 步运行是较大规模流程验证，仍不是论文级 30k 复现。当前逐点 Python/PyTorch rasterizer 的实测速度约为 Shipwreck 0.31 秒/步、Curasao 0.18 秒/步；按 30k 步线性估算约需 2.6 小时和 1.5 小时，正式长跑前应确认机器可接受该时长。
+- 两套完整 30k 运行均使用 CUDA、640 缩放、8192 个初始 Anchor、前后各 15000 步。Curasao 实际耗时约 6815 秒（约 1 小时 53 分），Shipwreck 约 11055 秒（约 3 小时 4 分）。
+- 两套完整运行均在第 15001 步切换到 phase 2，日志显示 `anchor_frozen=true` 且 Anchor 数量保持 8192；完整运行中 `densify_events=0`，因为初始稀疏点云经 `--max-anchors 8192` 后已达到上限。
+- 完整结果仍属于本项目原型的实验结果，不等同于三篇论文的官方复现。渲染指标只统计训练结束时导出的前 5 个视图。
 
 ## 额外结构测试
 
