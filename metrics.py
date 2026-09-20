@@ -52,13 +52,29 @@ def render_metrics(predictions, targets):
         rows.append((psnr(pred, target), ssim_simple(pred, target)))
     if not rows:
         return {"views": 0}
-    return {
+    result = {
         "views": len(rows),
         "PSNR": float(np.mean([r[0] for r in rows])),
         "SSIM": float(np.clip(np.mean([r[1] for r in rows]), 0.0, 1.0)),
         "LPIPS": None,
-        "LPIPS_note": "未计算：项目未强制下载预训练 LPIPS 权重。",
+        "LPIPS_note": "未计算：未安装或未缓存 lpips AlexNet 权重。",
     }
+    try:
+        import torch
+        import lpips
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        metric = lpips.LPIPS(net="alex").to(device).eval()
+        values = []
+        with torch.no_grad():
+            for pred, target in zip(predictions, targets):
+                a = torch.from_numpy(np.asarray(pred, dtype=np.float32)).permute(2, 0, 1)[None].to(device) * 2 - 1
+                b = torch.from_numpy(np.asarray(target, dtype=np.float32)).permute(2, 0, 1)[None].to(device) * 2 - 1
+                values.append(float(metric(a, b).item()))
+        result["LPIPS"] = float(np.mean(values))
+        result["LPIPS_note"] = "AlexNet LPIPS，前 5 个导出视图平均值。"
+    except Exception as exc:
+        result["LPIPS_note"] = f"未计算：{exc}"
+    return result
 
 
 def _read_xyz(path):
