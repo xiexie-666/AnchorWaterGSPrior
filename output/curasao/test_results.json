@@ -1,0 +1,45 @@
+{
+  "dataset": "D:\\Projects\\Dataset\\SeathruNeRF_dataset\\Curasao",
+  "checkpoint": "outputs\\curasao_full_30k\\checkpoints\\step_030000.pt",
+  "device": "cuda",
+  "split": "SeaThru-NeRF Curasao strict test (3 named views)",
+  "test_frames": [
+    "MTN_1292.png",
+    "MTN_1300.png",
+    "MTN_1308.png"
+  ],
+  "test_count": 3,
+  "render_image_size": 320,
+  "checkpoint_trained_on_all_frames": true,
+  "evaluation_status": "held_out_view_visualization_only; retraining on train frames is required for leakage_free_test_metrics",
+  "render": {
+    "views": 3,
+    "PSNR": 18.80550786593013,
+    "SSIM": 0.1187842225141218,
+    "LPIPS": 0.7951211531956991,
+    "LPIPS_note": "AlexNet LPIPS，对全部 held-out 测试视图取平均值。"
+  },
+  "per_view": [
+    {
+      "name": "MTN_1292.png",
+      "height": 212,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 1.3896764516830444
+    },
+    {
+      "name": "MTN_1300.png",
+      "height": 212,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 1.6477952003479004
+    },
+    {
+      "name": "MTN_1308.png",
+      "height": 212,
+      "width": 320,
+      "alpha_mean": 0.0,
+      "depth_mean": 0.0
+    }
+  ]
+}
