@@ -1,0 +1,8 @@
+{
+  "geometry_gt": "D:\\Projects\\Dataset\\my\\Shipwreck\\ground_truth\\point_cloud_colmap_visible.ply",
+  "geometry_units": "normalized_scene_coordinates",
+  "geometry_note": "Anchor 与 COLMAP-visible reference 分别按中位数中心和 98% 半径归一化，仅用于可视化诊断。",
+  "Chamfer": 0.07906775300685588,
+  "F-score": 0.4894305512021134,
+  "geometry_threshold": 0.05
+}
