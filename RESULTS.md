@@ -39,3 +39,14 @@ D:\App\Miniconda3\envs\3D-UIR\python.exe train.py `
 ## 额外结构测试
 
 `AnchorWaterModel.densify()` 已用 4 个 Anchor 的独立测试验证：可按 opacity 复制 Anchor、offset、feature、颜色、scale 和 opacity；冻结后返回 0，不再增加 Anchor。正式训练脚本只在 phase 1 调用 densification，phase 2 不再调用。
+
+## 投影/渲染修复后的无泄漏验证
+
+旧版结果的主要根因是归一化点云后没有同步相机平移，以及渲染器将每条射线的权重强制归一化。修复后增加二进制 PLY fallback、相机可见性筛选、深度排序 alpha 合成，并将测试视图从训练循环中排除。
+
+| 数据集 | 步数 | train/test | PSNR | SSIM | LPIPS | Chamfer | F-score |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| SeaThru-NeRF Curasao | 500 | 18 / 3 | 22.5279 | 0.6869 | 0.6935 | 不可用 | 不可用 |
+| Shipwreck | 500 | 134 / 20 | 20.7497 | 0.2144 | 0.6477 | 0.0778 | 0.4705 |
+
+上述指标来自 `outputs/eval_curasao_fixed_500` 和 `outputs/eval_shipwreck_fixed_500`，均为测试集视图；Shipwreck 几何值仍是归一化场景坐标下、相对于项目中 COLMAP-visible/reference 点云的诊断值。输出副本已整理到 `output/curasao/fixed_500_test_visualization` 和 `output/shipwreck/fixed_500_test_visualization`。
