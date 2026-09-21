@@ -1,0 +1,181 @@
+{
+  "dataset": "D:\\Projects\\Dataset\\my\\Shipwreck",
+  "checkpoint": "outputs\\shipwreck_full_30k\\checkpoints\\step_030000.pt",
+  "device": "cuda",
+  "split": "SeaThru-NeRF interval split (natural-sort indices 0,8,... )",
+  "test_frames": [
+    "P1170900.png",
+    "P1170958.png",
+    "P1170986.png",
+    "P1171019.png",
+    "P1171046.png",
+    "P1171082.png",
+    "P1171112.png",
+    "P1171186.png",
+    "P1171245.png",
+    "P1171292.png",
+    "P1171331.png",
+    "P1171375.png",
+    "P1171413.png",
+    "P1171493.png",
+    "P1171525.png",
+    "P1171570.png",
+    "P1171675.png",
+    "P1171798.png",
+    "P1171842.png",
+    "P1171880.png"
+  ],
+  "test_count": 20,
+  "render_image_size": 320,
+  "checkpoint_trained_on_all_frames": true,
+  "evaluation_status": "held_out_view_visualization_only; retraining on train frames is required for leakage_free_test_metrics",
+  "render": {
+    "views": 20,
+    "PSNR": 21.205327900780937,
+    "SSIM": 0.16437478862274477,
+    "LPIPS": 0.7215891927480698,
+    "LPIPS_note": "AlexNet LPIPS，对全部 held-out 测试视图取平均值。"
+  },
+  "per_view": [
+    {
+      "name": "P1170900.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.9999226927757263,
+      "depth_mean": 0.6158171892166138
+    },
+    {
+      "name": "P1170958.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.9999992251396179,
+      "depth_mean": 0.9133496284484863
+    },
+    {
+      "name": "P1170986.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 0.5004339814186096
+    },
+    {
+      "name": "P1171019.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.9999998211860657,
+      "depth_mean": 0.6867833137512207
+    },
+    {
+      "name": "P1171046.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 0.5710009336471558
+    },
+    {
+      "name": "P1171082.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 0.6941496133804321
+    },
+    {
+      "name": "P1171112.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 0.9400978684425354
+    },
+    {
+      "name": "P1171186.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 6.61492595099844e-06,
+      "depth_mean": 3.2621383070363663e-06
+    },
+    {
+      "name": "P1171245.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.002901933155953884,
+      "depth_mean": 0.0018505220068618655
+    },
+    {
+      "name": "P1171292.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.624649703502655,
+      "depth_mean": 0.4675505757331848
+    },
+    {
+      "name": "P1171331.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 3.122180714854039e-05,
+      "depth_mean": 6.9791972236998845e-06
+    },
+    {
+      "name": "P1171375.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.9999288320541382,
+      "depth_mean": 0.23059847950935364
+    },
+    {
+      "name": "P1171413.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.9999998211860657,
+      "depth_mean": 0.4607827961444855
+    },
+    {
+      "name": "P1171493.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 0.2909233570098877
+    },
+    {
+      "name": "P1171525.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.9993400573730469,
+      "depth_mean": 1.0116444826126099
+    },
+    {
+      "name": "P1171570.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 0.0,
+      "depth_mean": 0.0
+    },
+    {
+      "name": "P1171675.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 1.955858826637268
+    },
+    {
+      "name": "P1171798.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 3.332732677459717
+    },
+    {
+      "name": "P1171842.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 1.348431944847107
+    },
+    {
+      "name": "P1171880.png",
+      "height": 240,
+      "width": 320,
+      "alpha_mean": 1.0,
+      "depth_mean": 2.838480234146118
+    }
+  ]
+}
